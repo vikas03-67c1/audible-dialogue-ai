@@ -2,95 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* AI Assistant Design System - Modern tech-inspired palette with smooth animations */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors - clean and modern */
+    --background: 240 10% 3.9%;
+    --foreground: 220 15% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Card and surfaces */
+    --card: 240 8% 6%;
+    --card-foreground: 220 15% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 240 8% 6%;
+    --popover-foreground: 220 15% 95%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* AI-themed primary colors */
+    --primary: 217 91% 60%;
+    --primary-foreground: 220 15% 95%;
+    --primary-glow: 217 91% 70%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary AI accents */
+    --secondary: 240 6% 12%;
+    --secondary-foreground: 220 15% 85%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted tones */
+    --muted: 240 6% 10%;
+    --muted-foreground: 220 10% 60%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent colors for highlights */
+    --accent: 260 75% 65%;
+    --accent-foreground: 220 15% 95%;
 
-    --destructive: 0 84.2% 60.2%;
+    /* Status colors */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --success: 142 70% 50%;
+    --success-foreground: 220 15% 95%;
 
-    --radius: 0.5rem;
+    --warning: 47 96% 53%;
+    --warning-foreground: 240 8% 6%;
 
-    --sidebar-background: 0 0% 98%;
+    /* Interactive elements */
+    --border: 240 6% 15%;
+    --input: 240 6% 12%;
+    --ring: 217 91% 60%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --radius: 0.75rem;
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Gradients for modern AI feel */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(260 75% 65%));
+    --gradient-card: linear-gradient(145deg, hsl(240 8% 6%), hsl(240 6% 8%));
+    --gradient-glow: linear-gradient(90deg, hsl(217 91% 60% / 0.1), hsl(260 75% 65% / 0.1));
 
-    --sidebar-primary-foreground: 0 0% 98%;
+    /* Sidebar colors */
+    --sidebar-background: 240 8% 4%;
+    --sidebar-foreground: 220 15% 85%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 220 15% 95%;
+    --sidebar-accent: 240 6% 8%;
+    --sidebar-accent-foreground: 220 15% 85%;
+    --sidebar-border: 240 6% 12%;
+    --sidebar-ring: 217 91% 60%;
 
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Animation variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-glow: 0 0 40px hsl(217 91% 60% / 0.2);
+    --shadow-card: 0 8px 32px hsl(240 10% 3.9% / 0.5);
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  .light {
+    --background: 220 20% 97%;
+    --foreground: 240 8% 15%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 8% 15%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 8% 15%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 217 91% 55%;
+    --primary-foreground: 220 15% 95%;
+    --primary-glow: 217 91% 65%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 15% 95%;
+    --secondary-foreground: 240 8% 15%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 15% 95%;
+    --muted-foreground: 240 8% 45%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 260 75% 60%;
+    --accent-foreground: 220 15% 95%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --success: 142 70% 45%;
+    --success-foreground: 220 15% 95%;
+
+    --warning: 47 96% 53%;
+    --warning-foreground: 240 8% 15%;
+
+    --border: 220 15% 90%;
+    --input: 220 15% 95%;
+    --ring: 217 91% 55%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 55%), hsl(260 75% 60%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 15% 98%));
+    --gradient-glow: linear-gradient(90deg, hsl(217 91% 55% / 0.1), hsl(260 75% 60% / 0.1));
+
+    --sidebar-background: 220 20% 99%;
+    --sidebar-foreground: 240 8% 25%;
+    --sidebar-primary: 217 91% 55%;
+    --sidebar-primary-foreground: 220 15% 95%;
+    --sidebar-accent: 220 15% 96%;
+    --sidebar-accent-foreground: 240 8% 25%;
+    --sidebar-border: 220 15% 90%;
+    --sidebar-ring: 217 91% 55%;
+
+    --shadow-glow: 0 0 40px hsl(217 91% 55% / 0.15);
+    --shadow-card: 0 2px 20px hsl(240 8% 15% / 0.1);
   }
 }
 
@@ -100,6 +133,63 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.7);
+  }
+}
+
+@layer utilities {
+  /* Custom animation classes */
+  .animate-waveform {
+    animation: waveform 0.6s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-typing {
+    animation: typing 1.5s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.3s ease-out;
+  }
+
+  /* Hover effects */
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Text selection */
+  ::selection {
+    background: hsl(var(--primary) / 0.2);
   }
 }
