@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -9,7 +9,10 @@ import {
   User, 
   CheckCircle2,
   AlertCircle,
-  Loader2
+  Loader2,
+  ArrowUp,
+  ArrowDown,
+  Navigation
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -34,10 +37,52 @@ interface ChatWindowProps {
 export function ChatWindow({ messages, isTyping, onPlayAudio }: ChatWindowProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [currentMessageIndex, setCurrentMessageIndex] = useState<number | null>(null);
+  const [isNavigationMode, setIsNavigationMode] = useState(false);
 
   useEffect(() => {
+    if (!isNavigationMode) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isTyping, isNavigationMode]);
+
+  const navigateToMessage = (direction: 'up' | 'down') => {
+    if (messages.length === 0) return;
+    
+    if (currentMessageIndex === null) {
+      // Start navigation from the last message
+      setCurrentMessageIndex(messages.length - 1);
+      setIsNavigationMode(true);
+    } else {
+      const newIndex = direction === 'up' 
+        ? Math.max(0, currentMessageIndex - 1)
+        : Math.min(messages.length - 1, currentMessageIndex + 1);
+      
+      setCurrentMessageIndex(newIndex);
+    }
+  };
+
+  const exitNavigationMode = () => {
+    setIsNavigationMode(false);
+    setCurrentMessageIndex(null);
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
+  };
+
+  const scrollToMessage = (messageId: string) => {
+    const messageElement = document.getElementById(`message-${messageId}`);
+    if (messageElement) {
+      messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  useEffect(() => {
+    if (isNavigationMode && currentMessageIndex !== null) {
+      const messageId = messages[currentMessageIndex]?.id;
+      if (messageId) {
+        scrollToMessage(messageId);
+      }
+    }
+  }, [currentMessageIndex, isNavigationMode, messages]);
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -88,7 +133,61 @@ export function ChatWindow({ messages, isTyping, onPlayAudio }: ChatWindowProps)
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+    <div className="flex-1 flex flex-col bg-background relative">
+      {/* Navigation Controls */}
+      {messages.length > 0 && (
+        <div className="absolute top-4 right-4 z-10 bg-card/95 backdrop-blur-sm border border-border rounded-lg shadow-lg p-2">
+          <div className="flex items-center gap-2">
+            {!isNavigationMode ? (
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => navigateToMessage('up')}
+                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                title="Navigate through messages"
+              >
+                <Navigation className="h-4 w-4" />
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => navigateToMessage('up')}
+                  disabled={currentMessageIndex === 0}
+                  className="h-6 w-6 text-muted-foreground hover:text-foreground disabled:opacity-30"
+                  title="Previous message"
+                >
+                  <ArrowUp className="h-3 w-3" />
+                </Button>
+                <span className="text-xs text-muted-foreground min-w-[30px] text-center">
+                  {currentMessageIndex !== null ? currentMessageIndex + 1 : 0} / {messages.length}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => navigateToMessage('down')}
+                  disabled={currentMessageIndex === messages.length - 1}
+                  className="h-6 w-6 text-muted-foreground hover:text-foreground disabled:opacity-30"
+                  title="Next message"
+                >
+                  <ArrowDown className="h-3 w-3" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={exitNavigationMode}
+                  className="h-6 w-6 text-muted-foreground hover:text-foreground ml-1"
+                  title="Exit navigation"
+                >
+                  ✕
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
         <div className="max-w-4xl mx-auto space-y-6">
           {messages.length === 0 ? (
@@ -146,10 +245,12 @@ function MessageBubble({ message, onCopy, onPlayAudio, formatContent }: MessageB
   const isUser = message.type === 'user';
   
   return (
-    <div className={cn(
-      "flex items-start gap-3 group animate-fade-in",
-      isUser ? "flex-row-reverse" : "flex-row"
-    )}>
+    <div 
+      id={`message-${message.id}`}
+      className={cn(
+        "flex items-start gap-3 group animate-fade-in",
+        isUser ? "flex-row-reverse" : "flex-row"
+      )}>
       <Avatar className="h-8 w-8 border-2 border-primary/20">
         <AvatarFallback className={cn(
           "text-xs",
